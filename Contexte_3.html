@@ -1153,6 +1153,335 @@ filter: blur(2px);
     transform: scale(0.95) translateY(20px);
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+/* ===== RESPONSIVE DESIGN ÉPURÉ ===== */
+
+/* Tablettes */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .circles-container {
+        gap: 100px;
+    }
+    
+    .circle {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .circle-title {
+        font-size: 1.4rem;
+    }
+    
+    .final-title {
+        font-size: 3.5rem;
+    }
+    
+    body.expanded .main-section {
+        width: 85%;
+        height: 70vh;
+    }
+}
+
+/* Tablettes en mode portrait */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .circles-container {
+        flex-direction: column;
+        gap: 60px;
+    }
+    
+    .circle-item {
+        margin-bottom: 20px;
+    }
+    
+    .circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .circle-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .circle-text {
+        font-size: 0.85rem;
+        max-width: 250px;
+    }
+    
+    .final-title {
+        font-size: 2.8rem;
+    }
+    
+    .page-title {
+        font-size: 2.2rem;
+    }
+    
+    body.expanded .main-section {
+        width: 90%;
+        height: 80vh;
+    }
+    
+    /* Ajustements carte */
+    .info-panel {
+        right: 50px;
+        width: 320px;
+    }
+    
+    .video-container {
+        height: 180px;
+    }
+}
+
+/* Mobiles */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .learn-more-btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+    
+    .circles-container {
+        gap: 40px;
+    }
+    
+    .circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .circle-title {
+        font-size: 1.1rem;
+    }
+    
+    .circle-text {
+        font-size: 0.8rem;
+        max-width: 200px;
+    }
+    
+    .next-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .final-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    .discover-btn {
+        padding: 8px 18px;
+        font-size: 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.8rem;
+    }
+    
+    /* Ajustements carte mobile */
+    .map-container {
+        border-radius: 0;
+    }
+    
+    .info-panel {
+        right: 20px;
+        left: 20px;
+        width: auto;
+        transform: translateY(-50%);
+    }
+    
+    .video-container {
+        height: 150px;
+    }
+    
+    .operator-title {
+        font-size: 24px;
+    }
+    
+    .operator-description {
+        font-size: 12px;
+    }
+    
+    .stat-value {
+        font-size: 16px;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+    }
+}
+
+/* Très petits mobiles */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .circles-container {
+        gap: 30px;
+    }
+    
+    .circle {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .final-title {
+        font-size: 1.8rem;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Ajustements pour l'aide en mobile */
+@media (max-width: 768px) {
+    .help-form {
+        right: -10px;
+    }
+    
+    .form-field {
+        width: 250px;
+    }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        margin-bottom: 1.5rem;
+    }
+    
+    .circles-container {
+        gap: 50px;
+    }
+    
+    .circle {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .circle-title {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .final-title {
+        font-size: 2.2rem;
+    }
+    
+    body.expanded .main-section {
+        height: 90vh;
+    }
+}
+
+/* Pour éviter les débordements horizontaux */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 0 15px;
+    }
+    
+    .final-content-wrapper {
+        padding: 0 15px;
+    }
+}
+
+/* Ajustements spécifiques pour la transition */
+@media (max-width: 768px) {
+    .transition-title {
+        font-size: 2.5rem;
+    }
+    
+    .transition-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* Assurer que la carte reste utilisable */
+@media (max-width: 480px) {
+    .ol-zoom {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .ol-zoom button {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .back-btn {
+        top: 10px;
+        left: 10px;
+    }
+}
+
+/* Ajustements pour les très grandes écrans */
+@media (min-width: 1920px) {
+    .hero-title {
+        font-size: 6rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .final-title {
+        font-size: 5rem;
+    }
+}
+
+/* Correction du titre caché sur mobile */
+@media (max-width: 768px) {
+    .page-title {
+        top: 20px !important;
+        font-size: 1.8rem;
+        z-index: 1000;
+    }
+    
+    body.expanded .page-title {
+        top: 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.5rem;
+        top: 15px !important;
+        padding: 0 20px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    body.expanded .main-section {
+        margin-top: 60px;
+        height: calc(80vh - 60px);
+    }
+}
     </style>
 </head>
 <body>
@@ -1323,184 +1652,206 @@ filter: blur(2px);
     });
 
     // Initialisation de la nouvelle carte
-    function initMap() {
-        if (mapInitialized) return;
-        
-        const backBtn = document.getElementById('backBtn');
-        const infoPanel = document.getElementById('infoPanel');
-        const closeInfo = document.getElementById('closeInfo');
-        const operatorTitle = document.getElementById('operatorTitle');
-        const operatorDescription = document.getElementById('operatorDescription');
-        const videoContainer = document.getElementById('videoContainer');
-        const operatorStats = document.getElementById('operatorStats');
-        
-        defaultView = {
-            center: ol.proj.fromLonLat([-7.1200, 33.8000]),
-            zoom: 9.8
-        };
+function initMap() {
+    if (mapInitialized) return;
+    
+    const backBtn = document.getElementById('backBtn');
+    const infoPanel = document.getElementById('infoPanel');
+    const closeInfo = document.getElementById('closeInfo');
+    const operatorTitle = document.getElementById('operatorTitle');
+    const operatorDescription = document.getElementById('operatorDescription');
+    const videoContainer = document.getElementById('videoContainer');
+    const operatorStats = document.getElementById('operatorStats');
+    
+    // Ajustement du zoom et centre pour que tous les poinçons soient visibles
+    defaultView = {
+        center: ol.proj.fromLonLat([-7.2, 33.7]), // Centre légèrement ajusté
+        zoom: 8.5 // Zoom plus large
+    };
 
-        // Initialiser la carte OpenLayers
-        map = new ol.Map({
-            target: 'map',
-            view: new ol.View({
+    // Initialiser la carte OpenLayers
+    map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: defaultView.center,
+            zoom: defaultView.zoom,
+            minZoom: 7, // Zoom minimum plus large
+            maxZoom: 20
+        }),
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM({
+                    url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                    crossOrigin: 'anonymous'
+                })
+            })
+        ],
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true
+    });
+
+    // Données des opérateurs - coordonnées ajustées pour être bien visibles
+    const operators = {
+        inwi: {
+            coords: ol.proj.fromLonLat([-7.62, 33.60]), // INWI - Casablanca
+            name: "INWI",
+            className: "inwi-marker",
+            title: "INWI",
+            description: "Troisième opérateur télécoms au Maroc, INWI offre des services mobiles et internet innovants avec une couverture nationale étendue.",
+            video: "video_inwi.mp4",
+            stats: {
+                clients: "3M+",
+                fondation: "2009",
+                employes: "1,500+",
+                reseau: "4G/5G/Fibre"
+            }
+        },
+        iam: {
+            coords: ol.proj.fromLonLat([-6.85, 33.95]), // Maroc Télécom - Rabat
+            name: "Maroc Télécom", 
+            className: "iam-marker",
+            title: "Maroc Télécom",
+            description: "Opérateur historique marocain, leader sur le marché avec une présence internationale dans plusieurs pays africains.",
+            video: "video_mt_2.mp4",
+            stats: {
+                clients: "20M+",
+                fondation: "1998",
+                employes: "10,000+",
+                reseau: "4G/5G/Fibre"
+            }
+        },
+        orange: {
+            coords: ol.proj.fromLonLat([-7.64, 33.53]), // Orange - Casablanca
+            name: "Orange Maroc",
+            className: "orange-marker",
+            title: "Orange Maroc",
+            description: "Filiale du groupe Orange, présent au Maroc depuis 2010 avec des offres mobiles et fixes compétitives.",
+            video: "video_orange_2.mp4",
+            stats: {
+                clients: "15M+",
+                fondation: "1999",
+                employes: "2,000+",
+                reseau: "4G/5G/Fibre"
+            }
+        }
+    };
+
+    // S'assurer que la carte s'ajuste correctement sur mobile
+    setTimeout(() => {
+        map.updateSize();
+    }, 100);
+
+    // Redimensionner la carte quand la fenêtre change de taille
+    window.addEventListener('resize', function() {
+        setTimeout(() => {
+            map.updateSize();
+            // Recentrer la vue si nécessaire
+            map.getView().animate({
                 center: defaultView.center,
                 zoom: defaultView.zoom,
-                minZoom: 6,
-                maxZoom: 20
-            }),
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM({
-                        url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                        crossOrigin: 'anonymous'
-                    })
-                })
-            ],
-            loadTilesWhileAnimating: true,
-            loadTilesWhileInteracting: true
-        });
-
-        // Données des opérateurs
-        const operators = {
-            inwi: {
-                coords: ol.proj.fromLonLat([-7.621534, 33.606796]),
-                name: "INWI",
-                className: "inwi-marker",
-                title: "INWI",
-                description: "Troisième opérateur télécoms au Maroc, INWI offre des services mobiles et internet innovants avec une couverture nationale étendue.",
-                video: "video_inwi.mp4",
-                stats: {
-                    clients: "3M+",
-                    fondation: "2009",
-                    employes: "1,500+",
-                    reseau: "4G/5G/Fibre"
-                }
-            },
-            iam: {
-                coords: ol.proj.fromLonLat([-6.870964454809245, 33.95845425783586]),
-                name: "Maroc Télécom", 
-                className: "iam-marker",
-                title: "Maroc Télécom",
-                description: "Opérateur historique marocain, leader sur le marché avec une présence internationale dans plusieurs pays africains.",
-                video: "video_mt.mp4",
-                stats: {
-                    clients: "20M+",
-                    fondation: "1998",
-                    employes: "10,000+",
-                    reseau: "4G/5G/Fibre"
-                }
-            },
-            orange: {
-                coords: ol.proj.fromLonLat([-7.641222201642833, 33.53662959245152]),
-                name: "Orange Maroc",
-                className: "orange-marker",
-                title: "Orange Maroc",
-                description: "Filiale du groupe Orange, présent au Maroc depuis 2010 avec des offres mobiles et fixes compétitives.",
-                video: "video_orange_2.mp4",
-                stats: {
-                    clients: "15M+",
-                    fondation: "1999",
-                    employes: "2,000+",
-                    reseau: "4G/5G/Fibre"
-                }
-            }
-        };
-
-        // Créer les marqueurs avec Overlay
-        Object.keys(operators).forEach(operator => {
-            const op = operators[operator];
-            
-            const markerElement = document.createElement('div');
-            markerElement.className = `operator-marker ${op.className}`;
-            markerElement.title = op.name;
-            
-            const markerOverlay = new ol.Overlay({
-                position: op.coords,
-                positioning: 'center-center',
-                element: markerElement,
-                stopEvent: false
+                duration: 500
             });
+        }, 300);
+    });
+
+    // Le reste du code reste identique...
+    // Créer les marqueurs avec Overlay
+    Object.keys(operators).forEach(operator => {
+        const op = operators[operator];
+        
+        const markerElement = document.createElement('div');
+        markerElement.className = `operator-marker ${op.className}`;
+        markerElement.title = op.name;
+        
+        const markerOverlay = new ol.Overlay({
+            position: op.coords,
+            positioning: 'center-center',
+            element: markerElement,
+            stopEvent: false
+        });
+        
+        map.addOverlay(markerOverlay);
+        
+        markerElement.addEventListener('click', function(e) {
+            e.stopPropagation();
             
-            map.addOverlay(markerOverlay);
+            // Afficher le bouton retour immédiatement
+            backBtn.style.display = 'block';
             
-            markerElement.addEventListener('click', function(e) {
-                e.stopPropagation();
-                
-                // Afficher le bouton retour immédiatement
-                backBtn.style.display = 'block';
-                
-                // Faire le zoom avec une durée plus courte pour que le panneau apparaisse à la fin
-                map.getView().animate({
-                    center: op.coords,
-                    zoom: 16,
-                    duration: 800
-                }, function() {
-                    // Cette fonction est appelée quand l'animation est terminée
-                    showOperatorInfo(op);
-                });
+            // Faire le zoom avec une durée plus courte pour que le panneau apparaisse à la fin
+            map.getView().animate({
+                center: op.coords,
+                zoom: 16,
+                duration: 800
+            }, function() {
+                // Cette fonction est appelée quand l'animation est terminée
+                showOperatorInfo(op);
             });
         });
+    });
 
-        // Afficher les informations d'un opérateur
-        function showOperatorInfo(operator) {
-            operatorTitle.textContent = operator.title;
-            operatorDescription.textContent = operator.description;
-            
-            videoContainer.innerHTML = '';
-            const video = document.createElement('video');
-            video.src = operator.video;
-            video.autoplay = true;
-            video.muted = true;
-            video.loop = true;
-            video.playsInline = true;
-            video.setAttribute('webkit-playsinline', '');
-            video.controls = false;
-            video.style.objectFit = 'cover';
-            
-            // Créer l'overlay pour les informations
-            const videoOverlay = document.createElement('div');
-            videoOverlay.className = 'video-overlay';
-            videoOverlay.innerHTML = `
-                <div>
-                    <div class="operator-title">${operator.title}</div>
-                    <div class="operator-description">${operator.description}</div>
-                </div>
-            `;
-            
-            video.addEventListener('loadeddata', function() {
-                video.play().catch(e => {
-                    console.log('Auto-play bloqué:', e);
-                });
-            });
-            
+    // Afficher les informations d'un opérateur
+    function showOperatorInfo(operator) {
+        operatorTitle.textContent = operator.title;
+        operatorDescription.textContent = operator.description;
+        
+        videoContainer.innerHTML = '';
+        const video = document.createElement('video');
+        video.src = operator.video;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.setAttribute('webkit-playsinline', '');
+        video.controls = false;
+        video.style.objectFit = 'cover';
+        
+        // Créer l'overlay pour les informations
+        const videoOverlay = document.createElement('div');
+        videoOverlay.className = 'video-overlay';
+        videoOverlay.innerHTML = `
+            <div>
+                <div class="operator-title">${operator.title}</div>
+                <div class="operator-description">${operator.description}</div>
+            </div>
+        `;
+        
+        video.addEventListener('loadeddata', function() {
             video.play().catch(e => {
-                console.log('Erreur lecture auto:', e);
+                console.log('Auto-play bloqué:', e);
             });
-            
-            videoContainer.appendChild(video);
-            videoContainer.appendChild(videoOverlay);
-            
-            operatorStats.innerHTML = `
-                <div class="stat-item">
-                    <div class="stat-value">${operator.stats.clients}</div>
-                    <div class="stat-label">Clients</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${operator.stats.fondation}</div>
-                    <div class="stat-label">Fondation</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${operator.stats.employes}</div>
-                    <div class="stat-label">Employés</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${operator.stats.reseau}</div>
-                    <div class="stat-label">Réseau</div>
-                </div>
-            `;
-            
-            infoPanel.classList.add('active');
-        }
+        });
+        
+        video.play().catch(e => {
+            console.log('Erreur lecture auto:', e);
+        });
+        
+        videoContainer.appendChild(video);
+        videoContainer.appendChild(videoOverlay);
+        
+        operatorStats.innerHTML = `
+            <div class="stat-item">
+                <div class="stat-value">${operator.stats.clients}</div>
+                <div class="stat-label">Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${operator.stats.fondation}</div>
+                <div class="stat-label">Fondation</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${operator.stats.employes}</div>
+                <div class="stat-label">Employés</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">${operator.stats.reseau}</div>
+                <div class="stat-label">Réseau</div>
+            </div>
+        `;
+        
+        infoPanel.classList.add('active');
+    }
+
+    // ... le reste de votre fonction initMap() reste identique
 
         // Fermer le panneau d'informations
         closeInfo.addEventListener('click', function() {
