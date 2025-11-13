@@ -1113,7 +1113,7 @@ filter: blur(2px);
 
 .transition-content {
     text-align: center;
-    color: white;
+    color: #373737;
     transform: translateY(30px);
     opacity: 0;
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
@@ -1482,6 +1482,100 @@ filter: blur(2px);
         height: calc(80vh - 60px);
     }
 }
+
+/* Titre discret de la carte */
+.map-title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #5a4a5a;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-family: 'helvetica', sans-serif;
+    font-weight: 500;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 80%;
+    pointer-events: none;
+}
+
+body.map-view .map-title {
+    opacity: 1;
+    visibility: visible;
+    animation: fadeInDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s both;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Disparition douce quand on zoom sur un marqueur */
+body.map-view .map-title.fade-out {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Responsive pour le titre de la carte */
+@media (max-width: 768px) {
+    .map-title {
+        font-size: 0.8rem;
+        padding: 10px 20px;
+        top: 15px;
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-title {
+        font-size: 0.75rem;
+        padding: 8px 16px;
+        top: 10px;
+        max-width: 90%;
+    }
+}
+
+/* Ajustements supplémentaires pour mobile */
+@media (max-width: 480px) {
+    .map-title {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+        top: 8px;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 360px) {
+    .map-title {
+        font-size: 0.65rem;
+        padding: 5px 12px;
+    }
+}
+
+/* Mode paysage mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .map-title {
+        top: 5px;
+        padding: 6px 16px;
+        font-size: 0.7rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -1521,6 +1615,10 @@ filter: blur(2px);
         
         <!-- Container pour la carte - NOUVELLE CARTE -->
         <div class="map-container">
+
+                <div class="map-title" id="mapTitle">
+        Le podium marocain des télécoms
+    </div>
                 <button class="map-next-btn" id="mapNextBtn">Next</button>
 
             <div id="map"></div>
@@ -1652,6 +1750,7 @@ filter: blur(2px);
     });
 
     // Initialisation de la nouvelle carte
+// Initialisation de la nouvelle carte
 function initMap() {
     if (mapInitialized) return;
     
@@ -1662,11 +1761,12 @@ function initMap() {
     const operatorDescription = document.getElementById('operatorDescription');
     const videoContainer = document.getElementById('videoContainer');
     const operatorStats = document.getElementById('operatorStats');
+    const mapTitle = document.getElementById('mapTitle');
     
     // Ajustement du zoom et centre pour que tous les poinçons soient visibles
     defaultView = {
-        center: ol.proj.fromLonLat([-7.2, 33.7]), // Centre légèrement ajusté
-        zoom: 8.5 // Zoom plus large
+        center: ol.proj.fromLonLat([-7.2, 33.7]),
+        zoom: 8.5
     };
 
     // Initialiser la carte OpenLayers
@@ -1675,7 +1775,7 @@ function initMap() {
         view: new ol.View({
             center: defaultView.center,
             zoom: defaultView.zoom,
-            minZoom: 7, // Zoom minimum plus large
+            minZoom: 7,
             maxZoom: 20
         }),
         layers: [
@@ -1693,7 +1793,7 @@ function initMap() {
     // Données des opérateurs - coordonnées ajustées pour être bien visibles
     const operators = {
         inwi: {
-            coords: ol.proj.fromLonLat([-7.62, 33.60]), // INWI - Casablanca
+            coords: ol.proj.fromLonLat([-7.62, 33.60]),
             name: "INWI",
             className: "inwi-marker",
             title: "INWI",
@@ -1707,12 +1807,12 @@ function initMap() {
             }
         },
         iam: {
-            coords: ol.proj.fromLonLat([-6.85, 33.95]), // Maroc Télécom - Rabat
+            coords: ol.proj.fromLonLat([-6.85, 33.95]),
             name: "Maroc Télécom", 
             className: "iam-marker",
             title: "Maroc Télécom",
             description: "Opérateur historique marocain, leader sur le marché avec une présence internationale dans plusieurs pays africains.",
-            video: "video_mt_alleg_2.mp4",
+            video: "video_mt.mp4",
             stats: {
                 clients: "20M+",
                 fondation: "1998",
@@ -1721,7 +1821,7 @@ function initMap() {
             }
         },
         orange: {
-            coords: ol.proj.fromLonLat([-7.64, 33.53]), // Orange - Casablanca
+            coords: ol.proj.fromLonLat([-7.64, 33.53]),
             name: "Orange Maroc",
             className: "orange-marker",
             title: "Orange Maroc",
@@ -1754,7 +1854,6 @@ function initMap() {
         }, 300);
     });
 
-    // Le reste du code reste identique...
     // Créer les marqueurs avec Overlay
     Object.keys(operators).forEach(operator => {
         const op = operators[operator];
@@ -1774,6 +1873,9 @@ function initMap() {
         
         markerElement.addEventListener('click', function(e) {
             e.stopPropagation();
+            
+            // Faire disparaître le titre discrètement
+            mapTitle.classList.add('fade-out');
             
             // Afficher le bouton retour immédiatement
             backBtn.style.display = 'block';
@@ -1851,61 +1953,69 @@ function initMap() {
         infoPanel.classList.add('active');
     }
 
-    // ... le reste de votre fonction initMap() reste identique
+    // Fermer le panneau d'informations
+    closeInfo.addEventListener('click', function() {
+        infoPanel.classList.remove('active');
+        const videos = videoContainer.getElementsByTagName('video');
+        for (let video of videos) {
+            video.pause();
+        }
+    });
 
-        // Fermer le panneau d'informations
-        closeInfo.addEventListener('click', function() {
+    // Gestion du zoom pour afficher/masquer le bouton retour et le titre
+    map.getView().on('change:resolution', function() {
+        const currentZoom = map.getView().getZoom();
+        currentZoomLevel = currentZoom;
+        
+        // Afficher/masquer le titre selon le niveau de zoom
+        if (currentZoom > 12) {
+            mapTitle.classList.add('fade-out');
+        } else {
+            mapTitle.classList.remove('fade-out');
+        }
+        
+        // Afficher le bouton retour quand on est zoomé sur un marqueur
+        if (currentZoom > 12) {
+            backBtn.style.display = 'block';
+        } else {
+            // Quand on revient à la vue globale, cacher le bouton
+            backBtn.style.display = 'none';
+        }
+        
+        // Cacher le panneau quand on dézoome
+        if (currentZoom < 15 && infoPanel.classList.contains('active')) {
             infoPanel.classList.remove('active');
             const videos = videoContainer.getElementsByTagName('video');
             for (let video of videos) {
                 video.pause();
             }
-        });
+        }
+    });
 
-        // Gestion du zoom pour afficher/masquer le bouton retour
-        map.getView().on('change:resolution', function() {
-            const currentZoom = map.getView().getZoom();
-            currentZoomLevel = currentZoom;
-            
-            // Afficher le bouton retour quand on est zoomé sur un marqueur
-            if (currentZoom > 12) {
-                backBtn.style.display = 'block';
-            } else {
-                // Quand on revient à la vue globale, cacher le bouton
-                backBtn.style.display = 'none';
+    // Bouton retour vue globale
+    backBtn.addEventListener('click', function() {
+        // Faire réapparaître le titre
+        mapTitle.classList.remove('fade-out');
+        
+        // Cacher le panneau d'informations
+        if (infoPanel.classList.contains('active')) {
+            infoPanel.classList.remove('active');
+            const videos = videoContainer.getElementsByTagName('video');
+            for (let video of videos) {
+                video.pause();
             }
-            
-            // Cacher le panneau quand on dézoome
-            if (currentZoom < 15 && infoPanel.classList.contains('active')) {
-                infoPanel.classList.remove('active');
-                const videos = videoContainer.getElementsByTagName('video');
-                for (let video of videos) {
-                    video.pause();
-                }
-            }
+        }
+        
+        // Animation vers la vue globale
+        map.getView().animate({
+            center: defaultView.center,
+            zoom: defaultView.zoom,
+            duration: 800
         });
+    });
 
-        // Bouton retour vue globale
-        backBtn.addEventListener('click', function() {
-            // Cacher le panneau d'informations
-            if (infoPanel.classList.contains('active')) {
-                infoPanel.classList.remove('active');
-                const videos = videoContainer.getElementsByTagName('video');
-                for (let video of videos) {
-                    video.pause();
-                }
-            }
-            
-            // Animation vers la vue globale
-            map.getView().animate({
-                center: defaultView.center,
-                zoom: defaultView.zoom,
-                duration: 800
-            });
-        });
-
-        mapInitialized = true;
-    }
+    mapInitialized = true;
+}
 
     // Le reste du code pour le formulaire d'aide reste identique...
     const blurBackground = document.getElementById('blurBackground');
@@ -2132,4 +2242,3 @@ discoverBtn.addEventListener('transitionend', function() {
 </script>
 </body>
 </html>
-
