@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="AQ_sign_type.svg" type="image">
+    <title>Contexte</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@8.2.0/ol.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9eef9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Section principale */
+        .main-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(102, 83, 98, 0.939);
+            overflow: hidden;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(117, 86, 111, 0.905);
+            z-index: 2;
+            pointer-events: none;
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            max-width: 2000px;
+            padding: 0 20px;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: auto;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-family: 'helvetica', sans-serif;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            font-family: 'helvetica', sans-serif;
+            margin-bottom: 3rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Bouton Découvrir */
+        .learn-more-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-family: 'helvetica', sans-serif;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+            z-index: 11;
+            pointer-events: auto;
+        }
+
+        .learn-more-btn:hover {
+            background: white;
+            color: rgba(102, 83, 98, 0.939);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Conteneur des cercles avec titres et textes */
+        .circles-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 200px;
+            z-index: 5;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+        }
+
+        .circle-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .circle-item:nth-child(1) {
+            transition-delay: 0.4s;
+        }
+
+        .circle-item:nth-child(2) {
+            transition-delay: 0.6s;
+        }
+
+        .circle-title {
+            color: white;
+            font-size: 1.6rem;
+            font-family: 'helvetica', sans-serif;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .circle-text {
+            color: white;
+            font-size: 0.9rem;
+            font-family: 'helvetica', sans-serif;
+            max-width: 300px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Bouton Next */
+        .next-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'helvetica', sans-serif;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            z-index: 12;
+            backdrop-filter: blur(5px);
+            pointer-events: none;
+        }
+
+        .next-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Map container - NOUVEAU STYLE */
+        .map-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #af1f8618;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Styles pour les poinçons */
+        .operator-marker {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            transform: translate(-50%, -50%);
+        }
+
+        .inwi-marker {
+            background: #ff96c7;
+        }
+
+        .iam-marker {
+            background: #ff0000;
+        }
+
+        .orange-marker {
+            background: #FF8C00;
+        }
+
+        .operator-marker::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            animation: pulse 3s infinite;
+        }
+
+        .inwi-marker::before { color: #ff96c7; }
+        .iam-marker::before { color: #ff0000; }
+        .orange-marker::before { color: #FF8C00; }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+            100% { opacity: 0; transform: scale(1.8); }
+        }
+
+        /* Bouton retour */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .Btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: .3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            background-color: #ee8585;
+        }
+
+        .sign {
+            width: 100%;
+            transition-duration: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign svg {
+            width: 17px;
+            transform: rotate(180deg);
+        }
+
+        .sign svg path {
+            fill: white;
+        }
+
+        .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover {
+            width: 140px;
+            border-radius: 40px;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: .3s;
+            padding-left: 20px;
+        }
+
+        .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: .3s;
+            padding-right: 10px;
+        }
+
+        .Btn:active {
+            transform: translate(2px ,2px);
+        }
+
+        /* NOUVEAU STYLE POUR LE PANNEAU D'INFORMATION */
+        .info-panel {
+            position: absolute;
+            top: 50%;
+            right: 200px;
+            transform: translateY(-50%);
+            width: 380px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: 0;
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .info-panel.active {
+            display: block;
+        }
+
+        .close-info {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-info:hover {
+            background: transparent;
+            color: #ff0000;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        /* Masquer les contrôles natifs de la vidéo */
+        .video-container video::-webkit-media-controls {
+            display: none !important;
+        }
+        .video-container video::-webkit-media-controls-panel {
+            display: none !important;
+        }
+        .video-container video::-webkit-media-controls-play-button {
+            display: none !important;
+        }
+        .video-container video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+        }
+
+        /* Overlay d'informations sur la vidéo */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            color: white;
+            z-index: 2;
+        }
+
+        .operator-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .operator-description {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+            max-width: 90%;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .info-content {
+            padding: 20px;
+        }
+
+        .operator-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: #f3f4f4;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        /* Style pour les contrôles OpenLayers */
+        .ol-zoom {
+            top: 20px;
+            right: 20px;
+            left: auto;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .ol-zoom button {
+            background: white;
+            border: none;
+            border-radius: 0;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            color: #2d3436;
+            transition: background 0.2s ease;
+        }
+
+        .ol-zoom button:hover {
+            background: #f8f9fa;
+        }
+
+        .ol-zoom button:active {
+            background: #e9ecef;
+        }
+
+        .ol-attribution {
+            display: none;
+        }
+
+        /* État après clic - TRANSITIONS AMÉLIORÉES */
+        body.expanded .main-section {
+            height: 60vh;
+            width: 70%;
+            border-radius: 20px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.expanded .background-image {
+            opacity: 0;
+            transform: scale(1.05) translateY(-10px);
+            filter: blur(5px);
+        }
+
+        body.expanded .image-overlay {
+            background: rgba(75, 52, 70, 0.891);
+            backdrop-filter: blur(3px);
+        }
+
+        body.expanded .main-content {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
+
+        body.expanded .learn-more-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        body.expanded .circles-container {
+            opacity: 1;
+        }
+
+        body.expanded .circle-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.expanded .circle {
+            transform: scale(1);
+        }
+
+        body.expanded .next-btn {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* État après clic sur Next - TRANSITION VERS LA MAP */
+        body.map-view .main-section {
+            height: 90vh;
+            width: 90%;
+        }
+
+        body.map-view .circles-container {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.map-view .map-container {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        body.map-view .next-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Titre de la page */
+        .page-title {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(75, 52, 70, 0.891);
+            font-size: 3rem;
+            font-family: 'helvetica', sans-serif;
+            font-weight: bold;
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.expanded .page-title {
+            top: 50px;
+            opacity: 1;
+        }
+
+        body.map-view .page-title {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Messages de notification */
+        .message {
+            position: fixed;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 20px;
+            border-radius: 20px;
+            background: rgba(255, 189, 189, 0.98);
+            backdrop-filter: blur(10px);
+            color: #373737;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+        }
+
+        .message.success {
+            background: rgba(189, 255, 200, 0.98);
+            color: #2d5a2d;
+        }
+
+        .message.show {
+            animation: slideInOut 5s ease-in-out forwards;
+        }
+
+        @keyframes slideInOut {
+            0% {
+                top: -80px;
+                opacity: 0;
+            }
+            15% {
+                top: 20px;
+                opacity: 1;
+            }
+            85% {
+                top: 20px;
+                opacity: 1;
+            }
+            100% {
+                top: -80px;
+                opacity: 0;
+            }
+        }
+
+        /* Bouton d'aide et formulaire */
+        .help-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .help-button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: #af1f87;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+            z-index: 1101;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+        }
+
+        .help-button svg {
+            height: 1.3em;
+            fill: white;
+        }
+
+        .help-button:hover svg {
+            animation: jello-vertical 0.7s both;
+        }
+
+        @keyframes jello-vertical {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+            30% {
+                transform: scale3d(0.75, 1.25, 1);
+            }
+            40% {
+                transform: scale3d(1.25, 0.75, 1);
+            }
+            50% {
+                transform: scale3d(0.85, 1.15, 1);
+            }
+            65% {
+                transform: scale3d(1.05, 0.95, 1);
+            }
+            75% {
+                transform: scale3d(0.95, 1.05, 1);
+            }
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        .help-form {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1102;
+        }
+
+        .help-form.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .help-form.hiding {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        .form-field {
+            width: 280px;
+            border-radius: 12px;
+            padding: 2px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpField 0.4s ease-out forwards;
+        }
+
+        .form-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-field:nth-child(2) { animation-delay: 0.2s; }
+        .form-field:nth-child(3) { animation-delay: 0.3s; }
+        .form-field:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUpField {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #af1f87;
+        }
+
+        .form-field textarea {
+            height: 80px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        .send-button {
+            background: rgb(172, 172, 172);
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            background: rgb(131, 164, 140);
+            box-shadow: 0 4px 12px rgba(195, 164, 175, 0.3);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        /* Overlay de flou pour le fond */
+        .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            background: rgba(219, 219, 219, 0);
+            z-index: 1000;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blur-background.active {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background: rgba(219, 219, 219, 0.4);
+            pointer-events: auto;
+        }
+
+/* Bouton Next sur la carte - Même style que le bouton original */
+.map-next-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px; /* Changé de left: 50% à right: 30px */
+    background: rgba(75, 52, 70, 0.699);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-family: 'helvetica', sans-serif;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    pointer-events: none;
+    /* Supprimé transform: translateX(-50%) */
+}
+
+.map-next-btn:hover {
+    background: rgba(75, 52, 70, 0.891);
+    transform: translateY(-2px); /* Changé de translateX(-50%) translateY(-2px) à translateY(-2px) */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Afficher le bouton quand on est en vue carte */
+body.map-view .map-next-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Transition vers la page épurée - VERSION CORRECTE */
+body.final-view .main-section {
+    background: #dfc9df !important;
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Cache TOUS les enfants de .main-section sauf .final-content */
+body.final-view .main-section > *:not(.final-content) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Nouveau contenu qui apparaît */
+.final-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(50px);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s;
+    z-index: 100;
+}
+
+body.final-view .final-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.final-title {
+    font-size: 4.5rem;
+    font-family: 'helvetica', sans-serif;
+    color: rgb(155, 63, 150);
+    font-weight: bold;
+    text-align: center;
+    max-width: 1500px;
+    padding: 0 20px;
+}
+
+.background-filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.background-filter img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* L'image couvre tout l'espace */
+    
+    /* Ajustez l'opacité ici */
+    opacity: 0.1;
+filter: blur(2px);
+}
+
+.final-title {
+    font-size: 4.5rem;
+    font-family: 'helvetica', sans-serif;
+    color: rgb(133, 66, 133);
+    font-weight: bold;
+    text-align: center;
+    max-width: 1500px;
+    padding: 0 20px;
+    z-index: 2;
+    position: relative;
+}
+
+/* Conteneur pour le titre et le bouton */
+.final-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+}
+
+/* Ajustez le titre pour avoir un espace en bas */
+.final-title {
+    font-size: 4.5rem;
+    font-family: 'helvetica', sans-serif;
+    color: rgb(133, 66, 133);
+    font-weight: bold;
+    text-align: center;
+    max-width: 1500px;
+    padding: 0 20px;
+    z-index: 2;
+    position: relative;
+    margin-bottom: 40px; /* Espace entre le titre et le bouton */
+}
+
+/* Styles pour le bouton de découverte */
+.discover-btn {
+    background: transparent;
+    color: rgb(133, 66, 133);
+    border: 2px solid rgb(133, 66, 133);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-family: 'helvetica', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+.discover-btn:hover {
+    background: rgb(133, 66, 133);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 
+        0 15px 35px rgba(133, 66, 133, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgb(133, 66, 133);
+}
+
+.discover-btn:active {
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+/* Animation de la flèche */
+.btn-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.discover-btn:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* Effet de brillance au survol */
+.discover-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.8s ease;
+}
+
+.discover-btn:hover::before {
+    left: 100%;
+}
+
+/* Animation d'apparition du bouton */
+.final-view .discover-btn {
+    animation: slideUpButton 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+
+@keyframes slideUpButton {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation de transition vers la page suivante */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #dbdbdb;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-transition.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.transition-content {
+    text-align: center;
+    color: white;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+}
+
+.page-transition.active .transition-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.transition-subtitle {
+    font-size: 1.2rem;
+    font-family: 'helvetica', sans-serif;
+    opacity: 0.9;
+}
+
+.loading-spinner {
+            width: 50px;
+            height: 50px;
+            border-top: 2px solid rgb(131, 164, 140);
+            border-radius: 50%;
+            margin: 30px auto 0;
+            animation: spin 1s linear infinite;
+}
+
+
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animation de zoom et fade pour le contenu principal */
+.final-content.leaving {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+    </style>
+</head>
+<body>
+    <!-- Titre de la page -->
+    <div class="page-title" id="pageTitle">Un peu de contexte...</div>
+    
+    <!-- Section principale -->
+    <section class="main-section">
+        <img src="pexels-pixabay-260689.jpg" alt="Image de fond" class="background-image">
+        <div class="image-overlay"></div>
+        <div class="main-content">
+            <h1 class="hero-title">Une expérience enrichissante</h1>
+            <p class="hero-subtitle">Une plongée au coeur d'un stage de 5 mois</p>
+            <button class="learn-more-btn" id="learnMoreBtn">Commencer</button>
+        </div>
+        
+        <!-- Cercles avec titres et textes explicatifs -->
+        <div class="circles-container">
+            <div class="circle-item">
+                <div class="circle-title">Le Stagiaire</div>
+                <div class="circle">
+                    <img src="A_Q_type_white_2.jpg" alt="Logo entreprise">
+                </div>
+                <div class="circle-text">Description</div>
+            </div>
+            <div class="circle-item">
+                <div class="circle-title">La Structure</div>
+                <div class="circle">
+                    <img src="logo_original_2.png" alt="Projets réalisés">
+                </div>
+                <div class="circle-text">Description</div>
+            </div>
+        </div>
+        
+        <!-- Bouton Next -->
+        <button class="next-btn" id="nextBtn">Next</button>
+        
+        <!-- Container pour la carte - NOUVELLE CARTE -->
+        <div class="map-container">
+                <button class="map-next-btn" id="mapNextBtn">Next</button>
+
+            <div id="map"></div>
+            <div class="back-btn" id="backBtn">
+                <button class="Btn">
+                    <div class="sign">
+                        <svg viewBox="0 0 512 512">
+                            <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                        </svg>
+                    </div>
+                    <div class="text">Retour</div>
+                </button>
+            </div>
+
+            <!-- Cadre d'informations - NOUVEAU STYLE -->
+            <div class="info-panel" id="infoPanel">
+                <button class="close-info" id="closeInfo">×</button>
+                <div class="video-container" id="videoContainer">
+                    <!-- La vidéo sera chargée dynamiquement -->
+                    <div class="video-overlay">
+                        <div>
+                            <div class="operator-title" id="operatorTitle">INWI</div>
+                            <div class="operator-description" id="operatorDescription">
+                                L'un des trois principaux opérateurs télécoms au Maroc.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-content">
+                    <div class="operator-stats" id="operatorStats">
+                        <!-- Les stats seront chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="final-content" id="finalContent">
+    <div class="background-filter">
+        <img src="pexels-field-engineer-147254-442150.jpg" alt="Filtre background">
+    </div>
+    <div class="final-content-wrapper">
+        <h1 class="final-title">Plongée au coeur d'INWI</h1>
+        <!-- BOUTON CENTRÉ EN DESSOUS DU TITRE -->
+        <button class="discover-btn" id="discoverBtn">
+            <span>Découvrir</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+</div>
+    </section>
+
+    <!-- Overlay de flou pour le fond -->
+    <div class="blur-background" id="blurBackground"></div>
+
+    <!-- Message de notification -->
+    <div id="message" class="message"></div>
+
+    <!-- Bouton d'aide -->
+    <div class="help-container">
+        <button class="help-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                    d="M80 160c0-35.3 28.7-64 64-64h32c35.3 0 64 28.7 64 64v3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74V320c0 17.7 14.3 32 32 32s32-14.3 32-32v-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7V160c0-70.7-57.3-128-128-128H144C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
+                ></path>
+            </svg>
+        </button>
+        
+        <div class="help-form" id="helpForm">
+            <div class="form-field">
+                <input type="text" placeholder="Nom" id="helpName">
+            </div>
+            <div class="form-field">
+                <input type="email" placeholder="Email" id="helpEmail">
+            </div>
+            <div class="form-field">
+                <textarea placeholder="Message" id="helpMessage"></textarea>
+            </div>
+            <div class="form-field">
+                <button type="button" class="send-button" id="sendHelp">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de transition -->
+<div class="page-transition" id="pageTransition">
+    <div class="transition-content">
+        <p class="transition-subtitle">Chargement de l'expérience...</p>
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ol@8.2.0/dist/ol.js"></script>
+<script>
+    // Variables globales
+    let map = null;
+    let mapInitialized = false;
+    let defaultView = null;
+    let currentZoomLevel = null;
+
+    // Gestion du bouton "Découvrir"
+    const learnMoreBtn = document.getElementById('learnMoreBtn');
+    
+    learnMoreBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.body.classList.toggle('expanded');
+    });
+
+    // Gestion du bouton "Next"
+    const nextBtn = document.getElementById('nextBtn');
+    
+    nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Animation de disparition du titre
+        const pageTitle = document.getElementById('pageTitle');
+        pageTitle.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        pageTitle.style.opacity = '0';
+        pageTitle.style.transform = 'translateX(-50%) translateY(-20px)';
+        
+        // Passage à la vue carte
+        document.body.classList.add('map-view');
+        
+        // Initialiser la carte après un court délai pour permettre la transition
+        setTimeout(initMap, 500);
+    });
+
+    // Initialisation de la nouvelle carte
+    function initMap() {
+        if (mapInitialized) return;
+        
+        const backBtn = document.getElementById('backBtn');
+        const infoPanel = document.getElementById('infoPanel');
+        const closeInfo = document.getElementById('closeInfo');
+        const operatorTitle = document.getElementById('operatorTitle');
+        const operatorDescription = document.getElementById('operatorDescription');
+        const videoContainer = document.getElementById('videoContainer');
+        const operatorStats = document.getElementById('operatorStats');
+        
+        defaultView = {
+            center: ol.proj.fromLonLat([-7.1200, 33.8000]),
+            zoom: 9.8
+        };
+
+        // Initialiser la carte OpenLayers
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: defaultView.center,
+                zoom: defaultView.zoom,
+                minZoom: 6,
+                maxZoom: 20
+            }),
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM({
+                        url: 'https://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                        crossOrigin: 'anonymous'
+                    })
+                })
+            ],
+            loadTilesWhileAnimating: true,
+            loadTilesWhileInteracting: true
+        });
+
+        // Données des opérateurs
+        const operators = {
+            inwi: {
+                coords: ol.proj.fromLonLat([-7.621534, 33.606796]),
+                name: "INWI",
+                className: "inwi-marker",
+                title: "INWI",
+                description: "Troisième opérateur télécoms au Maroc, INWI offre des services mobiles et internet innovants avec une couverture nationale étendue.",
+                video: "video_inwi.mp4",
+                stats: {
+                    clients: "3M+",
+                    fondation: "2009",
+                    employes: "1,500+",
+                    reseau: "4G/5G/Fibre"
+                }
+            },
+            iam: {
+                coords: ol.proj.fromLonLat([-6.870964454809245, 33.95845425783586]),
+                name: "Maroc Télécom", 
+                className: "iam-marker",
+                title: "Maroc Télécom",
+                description: "Opérateur historique marocain, leader sur le marché avec une présence internationale dans plusieurs pays africains.",
+                video: "video_mt.mp4",
+                stats: {
+                    clients: "20M+",
+                    fondation: "1998",
+                    employes: "10,000+",
+                    reseau: "4G/5G/Fibre"
+                }
+            },
+            orange: {
+                coords: ol.proj.fromLonLat([-7.641222201642833, 33.53662959245152]),
+                name: "Orange Maroc",
+                className: "orange-marker",
+                title: "Orange Maroc",
+                description: "Filiale du groupe Orange, présent au Maroc depuis 2010 avec des offres mobiles et fixes compétitives.",
+                video: "video_orange_2.mp4",
+                stats: {
+                    clients: "15M+",
+                    fondation: "1999",
+                    employes: "2,000+",
+                    reseau: "4G/5G/Fibre"
+                }
+            }
+        };
+
+        // Créer les marqueurs avec Overlay
+        Object.keys(operators).forEach(operator => {
+            const op = operators[operator];
+            
+            const markerElement = document.createElement('div');
+            markerElement.className = `operator-marker ${op.className}`;
+            markerElement.title = op.name;
+            
+            const markerOverlay = new ol.Overlay({
+                position: op.coords,
+                positioning: 'center-center',
+                element: markerElement,
+                stopEvent: false
+            });
+            
+            map.addOverlay(markerOverlay);
+            
+            markerElement.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Afficher le bouton retour immédiatement
+                backBtn.style.display = 'block';
+                
+                // Faire le zoom avec une durée plus courte pour que le panneau apparaisse à la fin
+                map.getView().animate({
+                    center: op.coords,
+                    zoom: 16,
+                    duration: 800
+                }, function() {
+                    // Cette fonction est appelée quand l'animation est terminée
+                    showOperatorInfo(op);
+                });
+            });
+        });
+
+        // Afficher les informations d'un opérateur
+        function showOperatorInfo(operator) {
+            operatorTitle.textContent = operator.title;
+            operatorDescription.textContent = operator.description;
+            
+            videoContainer.innerHTML = '';
+            const video = document.createElement('video');
+            video.src = operator.video;
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.setAttribute('webkit-playsinline', '');
+            video.controls = false;
+            video.style.objectFit = 'cover';
+            
+            // Créer l'overlay pour les informations
+            const videoOverlay = document.createElement('div');
+            videoOverlay.className = 'video-overlay';
+            videoOverlay.innerHTML = `
+                <div>
+                    <div class="operator-title">${operator.title}</div>
+                    <div class="operator-description">${operator.description}</div>
+                </div>
+            `;
+            
+            video.addEventListener('loadeddata', function() {
+                video.play().catch(e => {
+                    console.log('Auto-play bloqué:', e);
+                });
+            });
+            
+            video.play().catch(e => {
+                console.log('Erreur lecture auto:', e);
+            });
+            
+            videoContainer.appendChild(video);
+            videoContainer.appendChild(videoOverlay);
+            
+            operatorStats.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-value">${operator.stats.clients}</div>
+                    <div class="stat-label">Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${operator.stats.fondation}</div>
+                    <div class="stat-label">Fondation</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${operator.stats.employes}</div>
+                    <div class="stat-label">Employés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${operator.stats.reseau}</div>
+                    <div class="stat-label">Réseau</div>
+                </div>
+            `;
+            
+            infoPanel.classList.add('active');
+        }
+
+        // Fermer le panneau d'informations
+        closeInfo.addEventListener('click', function() {
+            infoPanel.classList.remove('active');
+            const videos = videoContainer.getElementsByTagName('video');
+            for (let video of videos) {
+                video.pause();
+            }
+        });
+
+        // Gestion du zoom pour afficher/masquer le bouton retour
+        map.getView().on('change:resolution', function() {
+            const currentZoom = map.getView().getZoom();
+            currentZoomLevel = currentZoom;
+            
+            // Afficher le bouton retour quand on est zoomé sur un marqueur
+            if (currentZoom > 12) {
+                backBtn.style.display = 'block';
+            } else {
+                // Quand on revient à la vue globale, cacher le bouton
+                backBtn.style.display = 'none';
+            }
+            
+            // Cacher le panneau quand on dézoome
+            if (currentZoom < 15 && infoPanel.classList.contains('active')) {
+                infoPanel.classList.remove('active');
+                const videos = videoContainer.getElementsByTagName('video');
+                for (let video of videos) {
+                    video.pause();
+                }
+            }
+        });
+
+        // Bouton retour vue globale
+        backBtn.addEventListener('click', function() {
+            // Cacher le panneau d'informations
+            if (infoPanel.classList.contains('active')) {
+                infoPanel.classList.remove('active');
+                const videos = videoContainer.getElementsByTagName('video');
+                for (let video of videos) {
+                    video.pause();
+                }
+            }
+            
+            // Animation vers la vue globale
+            map.getView().animate({
+                center: defaultView.center,
+                zoom: defaultView.zoom,
+                duration: 800
+            });
+        });
+
+        mapInitialized = true;
+    }
+
+    // Le reste du code pour le formulaire d'aide reste identique...
+    const blurBackground = document.getElementById('blurBackground');
+    const nameRegex = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const validExtensions = ['com', 'fr', 'net', 'org', 'io', 'co', 'uk', 'de', 'es', 'it', 'be', 'ch', 'ca', 'us', 'eu', 'info', 'biz', 'name', 'pro', 'edu', 'gov', 'mil'];
+
+    function showMessage(text, isSuccess = false) {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = text;
+        messageEl.classList.remove('show', 'success');
+        
+        if (isSuccess) {
+            messageEl.classList.add('success');
+        }
+        
+        void messageEl.offsetWidth;
+        messageEl.classList.add('show');
+    }
+
+    function validateHelpForm(name, email, message) {
+        let isValid = true;
+        let errorMessage = '';
+        
+        if (!name) {
+            isValid = false;
+            errorMessage = 'Le nom est requis';
+        } else if (!nameRegex.test(name)) {
+            isValid = false;
+            errorMessage = 'Le nom contient des caractères non autorisés (lettres uniquement)';
+        } else if (!email) {
+            isValid = false;
+            errorMessage = 'L\'email est requis';
+        } else if (!emailRegex.test(email)) {
+            isValid = false;
+            errorMessage = 'Le format de l\'email est invalide';
+        } else {
+            const domainPart = email.split('@')[1];
+            const extension = domainPart.split('.').pop().toLowerCase();
+            if (!validExtensions.includes(extension)) {
+                isValid = false;
+                errorMessage = 'Extension d\'email non autorisée';
+            }
+        }
+        
+        if (!message) {
+            isValid = false;
+            errorMessage = 'Le message est requis';
+        }
+        
+        return { isValid, errorMessage };
+    }
+
+    const helpButton = document.querySelector('.help-button');
+    const helpForm = document.getElementById('helpForm');
+    const sendHelpButton = document.getElementById('sendHelp');
+
+    function hideHelpForm() {
+        helpForm.classList.add('hiding');
+        blurBackground.classList.remove('active');
+        setTimeout(() => {
+            helpForm.classList.remove('show', 'hiding');
+        }, 400);
+    }
+
+    function showHelpForm() {
+        helpForm.classList.remove('hiding');
+        helpForm.classList.add('show');
+        blurBackground.classList.add('active');
+    }
+
+    helpButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (helpForm.classList.contains('show')) {
+            hideHelpForm();
+        } else {
+            showHelpForm();
+        }
+    });
+
+    sendHelpButton.addEventListener('click', function() {
+        const name = document.getElementById('helpName').value.trim();
+        const email = document.getElementById('helpEmail').value.trim();
+        const message = document.getElementById('helpMessage').value.trim();
+
+        const validation = validateHelpForm(name, email, message);
+        
+        if (!validation.isValid) {
+            showMessage(validation.errorMessage, false);
+            return;
+        }
+
+        hideHelpForm();
+
+        const helpData = {
+            helpName: name,
+            helpEmail: email,
+            helpMessage: message
+        };
+        
+        fetch('https://script.google.com/macros/s/AKfycbxFAL3bHbyhPBnTKFkovTehGnDK1XIWYNEKRiZriDPs_4ARnJg7bR75v1ACOFsRqRsf/exec', {
+            method: 'POST',
+            body: JSON.stringify(helpData)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                showMessage(result.message, true);
+                
+                setTimeout(() => {
+                    document.getElementById('helpName').value = '';
+                    document.getElementById('helpEmail').value = '';
+                    document.getElementById('helpMessage').value = '';
+                }, 400);
+            } else {
+                showMessage('Erreur: ' + result.message, false);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            showMessage('Erreur lors de l\'envoi du message', false);
+        });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!helpButton.contains(event.target) && !helpForm.contains(event.target)) {
+            if (helpForm.classList.contains('show')) {
+                hideHelpForm();
+            }
+        }
+    });
+
+// Transition vers la page finale
+function goToFinalPage() {
+    // Faire un zoom arrière de la carte si on est en mode map
+    if (map && mapInitialized) {
+        map.getView().animate({
+            center: defaultView.center,
+            zoom: defaultView.zoom,
+            duration: 800
+        });
+        
+        // Optionnel: Désactiver les interactions de la map pendant la transition
+        map.getInteractions().forEach(interaction => {
+            interaction.setActive(false);
+        });
+    }
+    
+    // Arrêter toutes les vidéos
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => video.pause());
+    
+    // Fermer le panneau d'info s'il est ouvert
+    const infoPanel = document.getElementById('infoPanel');
+    if (infoPanel && infoPanel.classList.contains('active')) {
+        infoPanel.classList.remove('active');
+    }
+    
+    // Cacher tous les boutons et contrôles
+    const mapNextBtn = document.getElementById('mapNextBtn');
+    const backBtn = document.getElementById('backBtn');
+    const olZoom = document.querySelector('.ol-zoom');
+    
+    if (mapNextBtn) mapNextBtn.style.opacity = '0';
+    if (backBtn) backBtn.style.opacity = '0';
+    if (olZoom) olZoom.style.opacity = '0';
+    
+    // Lancer la transition
+    document.body.classList.add('final-view');
+    
+    // Optionnel: Changer le titre de la page
+    setTimeout(() => {
+        document.title = "INWI - Contexte";
+    }, 1000);
+}
+
+// Appeler cette fonction quand tu veux lancer la transition
+// Par exemple, sur le bouton mapNextBtn :
+const mapNextBtn = document.getElementById('mapNextBtn');
+if (mapNextBtn) {
+    mapNextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        goToFinalPage();
+    });
+}
+
+// Gestion du bouton de découverte
+const discoverBtn = document.getElementById('discoverBtn');
+const pageTransition = document.getElementById('pageTransition');
+const finalContent = document.getElementById('finalContent');
+
+discoverBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Animation de clic sur le bouton
+    this.style.transform = 'scale(0.95)';
+    
+    // Ajouter une classe pour l'animation de départ du contenu
+    finalContent.classList.add('leaving');
+    
+    // Délai pour laisser l'animation de départ se faire
+    setTimeout(() => {
+        // Activer l'overlay de transition
+        pageTransition.classList.add('active');
+        
+        // Redirection après un délai pour voir l'animation
+        setTimeout(() => {
+            window.location.href = 'Qui_sont_INWI.html';
+        }, 2000); // 2 secondes pour voir l'animation complète
+        
+    }, 400); // Délai après l'animation de départ
+});
+
+// Réinitialiser l'échelle du bouton après l'animation
+discoverBtn.addEventListener('transitionend', function() {
+    if (this.style.transform === 'scale(0.95)') {
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 50);
+    }
+});
+</script>
+</body>
+</html>

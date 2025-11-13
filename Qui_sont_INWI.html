@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="AQ_sign_type.svg" type="image">
+    <title>INWI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eeddee;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Section principale */
+        .main-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9eef9;
+        }
+
+        .main-content {
+            text-align: center;
+            color: rgb(84, 65, 83);
+            max-width: 1500px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-family: 'helvetica', sans-serif;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Messages de notification */
+        .message {
+            position: fixed;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 20px;
+            border-radius: 20px;
+            background: rgba(255, 189, 189, 0.98);
+            backdrop-filter: blur(10px);
+            color: #373737;
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+        }
+
+        .message.success {
+            background: rgba(189, 255, 200, 0.98);
+            color: #2d5a2d;
+        }
+
+        .message.show {
+            animation: slideInOut 5s ease-in-out forwards;
+        }
+
+        @keyframes slideInOut {
+            0% {
+                top: -80px;
+                opacity: 0;
+            }
+            15% {
+                top: 20px;
+                opacity: 1;
+            }
+            85% {
+                top: 20px;
+                opacity: 1;
+            }
+            100% {
+                top: -80px;
+                opacity: 0;
+            }
+        }
+
+        /* Bouton d'aide et formulaire */
+        .help-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .help-button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: #af1f87;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+            z-index: 1101;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+        }
+
+        .help-button svg {
+            height: 1.3em;
+            fill: white;
+        }
+
+        .help-button:hover svg {
+            animation: jello-vertical 0.7s both;
+        }
+
+        @keyframes jello-vertical {
+            0% {
+                transform: scale3d(1, 1, 1);
+            }
+            30% {
+                transform: scale3d(0.75, 1.25, 1);
+            }
+            40% {
+                transform: scale3d(1.25, 0.75, 1);
+            }
+            50% {
+                transform: scale3d(0.85, 1.15, 1);
+            }
+            65% {
+                transform: scale3d(1.05, 0.95, 1);
+            }
+            75% {
+                transform: scale3d(0.95, 1.05, 1);
+            }
+            100% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
+
+        .help-form {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1102;
+        }
+
+        .help-form.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .help-form.hiding {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        .form-field {
+            width: 280px;
+            border-radius: 12px;
+            padding: 2px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpField 0.4s ease-out forwards;
+        }
+
+        .form-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-field:nth-child(2) { animation-delay: 0.2s; }
+        .form-field:nth-child(3) { animation-delay: 0.3s; }
+        .form-field:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUpField {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #af1f87;
+        }
+
+        .form-field textarea {
+            height: 80px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        .send-button {
+            background: rgb(172, 172, 172);
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            background: rgb(131, 164, 140);
+            box-shadow: 0 4px 12px rgba(195, 164, 175, 0.3);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        /* Overlay de flou pour le fond */
+        .blur-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            background: rgba(219, 219, 219, 0);
+            z-index: 1000;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blur-background.active {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background: rgba(219, 219, 219, 0.4);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Section principale -->
+    <section class="main-section">
+        <div class="main-content">
+            <h1 class="hero-title">En construction...</h1>
+        </div>
+    </section>
+
+    <!-- Overlay de flou pour le fond -->
+    <div class="blur-background" id="blurBackground"></div>
+
+    <!-- Message de notification -->
+    <div id="message" class="message"></div>
+
+    <!-- Bouton d'aide -->
+    <div class="help-container">
+        <button class="help-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                    d="M80 160c0-35.3 28.7-64 64-64h32c35.3 0 64 28.7 64 64v3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74V320c0 17.7 14.3 32 32 32s32-14.3 32-32v-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7V160c0-70.7-57.3-128-128-128H144C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"
+                ></path>
+            </svg>
+        </button>
+        
+        <div class="help-form" id="helpForm">
+            <div class="form-field">
+                <input type="text" placeholder="Nom" id="helpName">
+            </div>
+            <div class="form-field">
+                <input type="email" placeholder="Email" id="helpEmail">
+            </div>
+            <div class="form-field">
+                <textarea placeholder="Message" id="helpMessage"></textarea>
+            </div>
+            <div class="form-field">
+                <button type="button" class="send-button" id="sendHelp">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const blurBackground = document.getElementById('blurBackground');
+        const nameRegex = /^[a-zA-ZÀ-ÿ\s\-']+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const validExtensions = ['com', 'fr', 'net', 'org', 'io', 'co', 'uk', 'de', 'es', 'it', 'be', 'ch', 'ca', 'us', 'eu', 'info', 'biz', 'name', 'pro', 'edu', 'gov', 'mil'];
+
+        function showMessage(text, isSuccess = false) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.classList.remove('show', 'success');
+            
+            if (isSuccess) {
+                messageEl.classList.add('success');
+            }
+            
+            void messageEl.offsetWidth;
+            messageEl.classList.add('show');
+        }
+
+        function validateHelpForm(name, email, message) {
+            let isValid = true;
+            let errorMessage = '';
+            
+            if (!name) {
+                isValid = false;
+                errorMessage = 'Le nom est requis';
+            } else if (!nameRegex.test(name)) {
+                isValid = false;
+                errorMessage = 'Le nom contient des caractères non autorisés (lettres uniquement)';
+            } else if (!email) {
+                isValid = false;
+                errorMessage = 'L\'email est requis';
+            } else if (!emailRegex.test(email)) {
+                isValid = false;
+                errorMessage = 'Le format de l\'email est invalide';
+            } else {
+                const domainPart = email.split('@')[1];
+                const extension = domainPart.split('.').pop().toLowerCase();
+                if (!validExtensions.includes(extension)) {
+                    isValid = false;
+                    errorMessage = 'Extension d\'email non autorisée';
+                }
+            }
+            
+            if (!message) {
+                isValid = false;
+                errorMessage = 'Le message est requis';
+            }
+            
+            return { isValid, errorMessage };
+        }
+
+        const helpButton = document.querySelector('.help-button');
+        const helpForm = document.getElementById('helpForm');
+        const sendHelpButton = document.getElementById('sendHelp');
+
+        function hideHelpForm() {
+            helpForm.classList.add('hiding');
+            blurBackground.classList.remove('active');
+            setTimeout(() => {
+                helpForm.classList.remove('show', 'hiding');
+            }, 400);
+        }
+
+        function showHelpForm() {
+            helpForm.classList.remove('hiding');
+            helpForm.classList.add('show');
+            blurBackground.classList.add('active');
+        }
+
+        helpButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (helpForm.classList.contains('show')) {
+                hideHelpForm();
+            } else {
+                showHelpForm();
+            }
+        });
+
+        sendHelpButton.addEventListener('click', function() {
+            const name = document.getElementById('helpName').value.trim();
+            const email = document.getElementById('helpEmail').value.trim();
+            const message = document.getElementById('helpMessage').value.trim();
+
+            const validation = validateHelpForm(name, email, message);
+            
+            if (!validation.isValid) {
+                showMessage(validation.errorMessage, false);
+                return;
+            }
+
+            hideHelpForm();
+
+            const helpData = {
+                helpName: name,
+                helpEmail: email,
+                helpMessage: message
+            };
+            
+            fetch('https://script.google.com/macros/s/AKfycbxFAL3bHbyhPBnTKFkovTehGnDK1XIWYNEKRiZriDPs_4ARnJg7bR75v1ACOFsRqRsf/exec', {
+                method: 'POST',
+                body: JSON.stringify(helpData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showMessage(result.message, true);
+                    
+                    setTimeout(() => {
+                        document.getElementById('helpName').value = '';
+                        document.getElementById('helpEmail').value = '';
+                        document.getElementById('helpMessage').value = '';
+                    }, 400);
+                } else {
+                    showMessage('Erreur: ' + result.message, false);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showMessage('Erreur lors de l\'envoi du message', false);
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!helpButton.contains(event.target) && !helpForm.contains(event.target)) {
+                if (helpForm.classList.contains('show')) {
+                    hideHelpForm();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
